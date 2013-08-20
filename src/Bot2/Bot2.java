@@ -31,6 +31,10 @@ public class Bot2 extends UiAutomatorTestCase{
 		}catch (RemoteException e){
 			Log.i("BOT: ", " unfreeze rotation failed");
 		}
+		m_uiDevice.pressBack();
+		m_uiDevice.pressBack();
+		m_uiDevice.pressBack();
+		m_uiDevice.pressBack();
 	}
 
 	private void initSetup() {

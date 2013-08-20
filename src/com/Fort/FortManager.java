@@ -1,14 +1,20 @@
 package com.Fort;
 
+import com.android.uiautomator.core.UiObject;
+import com.android.uiautomator.core.UiObjectNotFoundException;
+import com.android.uiautomator.core.UiSelector;
+
 import android.util.Log;
 import Bot2.Bot2;
 
 public class FortManager {
-	private static int WINDOW_UPDATE_TIMEOUT = 20000;
+	private static int WINDOW_UPDATE_TIMEOUT = 5000;
 	private static FortManager m_instance;
 	private static int START_1_X = 400, START_1_Y = 360;
 	private static int START_LOCAL_1_X = 200, START_LOCAL_1_Y = 360;
 	private static int START_BATTLE_X = 750, START_BATTLE_Y = 420;
+	private static int RETRY_X = 582, RETRY_Y = 353;
+	private static int inBattle = 0;
 	
 	public FortManager(){
 		getToStartScreen2();
@@ -18,52 +24,112 @@ public class FortManager {
 		}else {
 			startArenaFight();
 		}
+
+		for(int i = 0 ; i < 2 ; i ++ ) {
+			Log.i("BOT: ", "Round " + String.valueOf(i));
+			startBattle();
+			doBattle();
+			postBattle();	
+		}
 		
+	}
+	
+	private void postBattle() {
+		Log.i("BOT: ", "On battle end screen");
+		Bot2.getDevice().click(RETRY_X, RETRY_Y);
+		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*2)){
+			Log.i("BOT: ", "Retry 2 done " );
+		}else {
+			Log.i("BOT: ", "Retry 2 failed ");
+		}
 	}
 	public static void begin(){
 		m_instance = new FortManager();
 	}
 	
+	public static FortManager getInstance() {
+		return m_instance;
+	}
+	
+	private void doBattle() {
+		inBattle = 1;
+		Log.i("BOT: ", "On battle screen");
+		new BattleManager("BATTLE").start();
+		
+		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*120)){
+			Log.i("BOT: ", "Battle done ");
+		}else {
+			Log.i("BOT: ", " Battle failed " );
+		}
+		try {
+			UiObject screenData = new UiObject(new UiSelector().className("android.webkit.WebView"));
+			
+			
+			Log.i("BOT: ", screenData.getPackageName());
+			Log.i("BOT: ", screenData.getClass().getName());
+
+			
+		} catch (UiObjectNotFoundException e) {
+			Log.i("BOT: ", "No webview found");
+		}
+		inBattle = 0;
+		try{
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			Log.i("BOT: ","Post Battle sleep interrupted");
+		}
+	}
+	
+	public static int isInBattle() {
+		return inBattle;
+	}
 	
 	private boolean getToStartScreen2() {
 		int c = 3;
 		while((c--)!=0) {
-			if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT)){
+			if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*4)){
 				Log.i("BOT: ", "Wait for window update done " + String.valueOf(c) );
 			}else {
 				Log.i("BOT: ", "Wait for window update failed " + String.valueOf(c) );
 			}
 		}
-		Log.i("BOT: ", "At start screen 1" );
+		Log.i("BOT: ", "At start screen 1 [ one that has Rate, more and start ]" );
 		//getting to start screen 2
 		Bot2.getDevice().click(START_1_X, START_1_Y);
-		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT)){
-			Log.i("BOT: ", "Start screen 2 done " );
+		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*2)){
+			Log.i("BOT: ", "got to screen 2 done " );
 		}else {
-			Log.i("BOT: ", "Start screen 2 failed ");
-		}		return true;
+			Log.i("BOT: ", "got to screen 2 failed ");
+		}
+		/*try {
+			UiObject screenData = new UiObject(new UiSelector().className("android.webkit.WebView"));
+			Log.i("BOT: ", screenData.getPackageName());
+		} catch (UiObjectNotFoundException e) {
+			Log.i("BOT: ", "No webview found");
+		}*/
+		
+		return true;
 	}
 	
 	private boolean startLocalFight() {
 		//For now assuming that I am already on the screen
+    Log.i("BOT: ", "At Start Local Fight [ One where I can select the Local or Arena ]");
 		Bot2.getDevice().click(START_LOCAL_1_X, START_LOCAL_1_Y);
-		Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT);
 		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT)){
-			Log.i("BOT: ", "Unit selection screen done " );
+			Log.i("BOT: ", "Arrived at Unit selection screen done " );
 		}else {
-			Log.i("BOT: ", "Unit selection screen failed " );
-		}		startBattle();
+			Log.i("BOT: ", "Arrived at Unit selection screen failed " );
+		}		
 		return true;
 	}
 	
 	private boolean startBattle(){
 		Bot2.getDevice().click(START_BATTLE_X, START_BATTLE_Y);
 		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT)){
-			Log.i("BOT: ", "Fight screen done " );
+			Log.i("BOT: ", "On Fight screen done " );
 		}else {
-			Log.i("BOT: ", "Fight screen failed " );
+			Log.i("BOT: ", "On Fight screen failed " );
 		}
-		Bot2.getDevice().dumpWindowHierarchy(null);
 		return true;
 	}
 	private boolean startArenaFight() {
