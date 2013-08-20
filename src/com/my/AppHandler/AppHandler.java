@@ -8,7 +8,8 @@ import com.android.uiautomator.core.UiScrollable;
 import com.android.uiautomator.core.UiSelector;
 
 public class AppHandler {
-	public static boolean beginApp (String packageName, String desc){
+
+	public static boolean beginApp (String packageName, String desc) {
 		UiScrollable appViews = new UiScrollable(new UiSelector()
         .scrollable(true));
 		appViews.setAsHorizontalList();
@@ -22,16 +23,11 @@ public class AppHandler {
 	        "Fort Conquer");
 			Log.i("BOT: ", gameApp.getContentDescription()+ "Launched");
 			gameApp.clickAndWaitForNewWindow();
-		
 		} catch(UiObjectNotFoundException e) {
 			Log.i("BOT: ", "Press recent Apps failed due to remote exception");
 			return false;
 		}
-		
-		
 		return true;
 	}
 	
-	
-
 }

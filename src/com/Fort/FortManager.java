@@ -11,8 +11,10 @@ public class FortManager {
 	private static int START_BATTLE_X = 750, START_BATTLE_Y = 420;
 	private static int RETRY_X = 582, RETRY_Y = 353;
 	private static int inBattle = 0;
+	private static int NUMBER_OF_BATTLES = 10;
 	
 	public FortManager(){
+		Log.i("BOT: ", "In FortManager constructor");
 		getToStartScreen2();
 		boolean local = true;
 		if(local) {
@@ -21,7 +23,7 @@ public class FortManager {
 			startArenaFight();
 		}
 
-		for(int i = 0 ; i < 10 ; i ++ ) {
+		for(int i = 0 ; i < NUMBER_OF_BATTLES ; i ++ ) {
 			Log.i("BOT: ", "Round " + String.valueOf(i));
 			startBattle();
 			doBattle();
@@ -72,7 +74,7 @@ public class FortManager {
 	}
 	
 	private boolean getToStartScreen2() {
-		int c = 3;
+		int c = 3; //Screen seems to refresh thrice before getting to screen number 1.
 		Log.i("BOT: ", "FortManager beginning");
 		while((c--)!=0) {
 			if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*4)){
@@ -89,12 +91,6 @@ public class FortManager {
 		}else {
 			Log.i("BOT: ", "got to screen 2 failed ");
 		}
-		/*try {
-			UiObject screenData = new UiObject(new UiSelector().className("android.webkit.WebView"));
-			Log.i("BOT: ", screenData.getPackageName());
-		} catch (UiObjectNotFoundException e) {
-			Log.i("BOT: ", "No webview found");
-		}*/
 		
 		return true;
 	}

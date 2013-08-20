@@ -8,7 +8,7 @@ public class BattleManager extends Thread{
 		super (str);
 	}
 	int ROAD_X = 300, SLOT_Y= 430;
-	int[] ROAD_Y={350,285,220,160,100};
+	int[] ROAD_Y={350,285,220,160,90};
 	int[] SLOT_X={275,350,425,500,575};
 	int current_slot=0;
 	int current_road=0;
@@ -23,17 +23,12 @@ public class BattleManager extends Thread{
 			}
 		}
 		Log.i("BOT: ", "Battle done ");
-		postBattle();
 	}
 	private void makeMove() {
 		Bot2.getDevice().swipe(SLOT_X[current_slot], SLOT_Y, ROAD_X, ROAD_Y[current_road], 5);
-		String messge = "Current slot: "+ String.valueOf(current_slot)+" current road: "+String.valueOf(current_road)+" "+String.valueOf(SLOT_X[current_slot]) +" "+String.valueOf(SLOT_Y)+" " +String.valueOf(ROAD_X)+" "+String.valueOf(ROAD_Y[current_road]);  
+		String messge = "In MakeMove: Current slot: "+ String.valueOf(current_slot)+" current road: "+String.valueOf(current_road)+" "+String.valueOf(SLOT_X[current_slot]) +" "+String.valueOf(SLOT_Y)+" " +String.valueOf(ROAD_X)+" "+String.valueOf(ROAD_Y[current_road]);  
 		Log.i("BOT: ", messge);
 		current_road = (current_road+1)%5;
 		current_slot = (current_slot+1)%5;
 	}
-	private void postBattle() {
-		Log.i("BOT: ", "Post battle screen");
-	}
-	
 }

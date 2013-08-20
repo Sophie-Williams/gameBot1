@@ -13,13 +13,16 @@ public class Bot2 extends UiAutomatorTestCase{
 	private static UiDevice m_uiDevice ;
 	private static int DISPLAY_WIDTH;
 	private static int DISPLAY_HEIGHT;
+	private static int DEBUG = 0;
 	public void testDemo() throws UiObjectNotFoundException {
 		
+		if(DEBUG==1) {
+			debug();
+			return;
+		}
 		initSetup();
-		//debug();
 		AppHandler.beginApp("com.droidhen.fortconquer", "Fort");
-		//debug();
-	    FortManager.begin();
+		FortManager.begin();
 		exit();
 	}
 	
@@ -50,6 +53,7 @@ public class Bot2 extends UiAutomatorTestCase{
 	}
 	
 	private void debug() {
+		Log.i("BOT: ","In debug Function");
 		DISPLAY_HEIGHT= m_uiDevice.getDisplayHeight();
 		DISPLAY_WIDTH= m_uiDevice.getDisplayWidth();
 		Log.i("BOT: ", String.valueOf(DISPLAY_HEIGHT) + " " + String.valueOf(DISPLAY_WIDTH) );
