@@ -18,7 +18,7 @@ public class Bot2 extends UiAutomatorTestCase{
 		initSetup();
 		//debug();
 		AppHandler.beginApp("com.droidhen.fortconquer", "Fort");
-		debug();
+		//debug();
 	    FortManager.begin();
 		exit();
 	}
@@ -53,10 +53,10 @@ public class Bot2 extends UiAutomatorTestCase{
 		DISPLAY_HEIGHT= m_uiDevice.getDisplayHeight();
 		DISPLAY_WIDTH= m_uiDevice.getDisplayWidth();
 		Log.i("BOT: ", String.valueOf(DISPLAY_HEIGHT) + " " + String.valueOf(DISPLAY_WIDTH) );
-		/*getDevice().swipe(300, 300, 420 ,750, 100);
+		getDevice().swipe(275, 540, 300 ,350, 100);
 		getDevice().swipe(300, 300, 420, 760, 100);
 		getDevice().swipe(300, 300, 420, 770,  100);
-		getDevice().swipe(300, 300, 420, 780, 100);*/
+		getDevice().swipe(300, 300, 420, 780, 100);
 	}
 	
 	public static UiDevice getDevice() {

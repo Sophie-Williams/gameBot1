@@ -1,9 +1,5 @@
 package com.Fort;
 
-import com.android.uiautomator.core.UiObject;
-import com.android.uiautomator.core.UiObjectNotFoundException;
-import com.android.uiautomator.core.UiSelector;
-
 import android.util.Log;
 import Bot2.Bot2;
 
@@ -25,7 +21,7 @@ public class FortManager {
 			startArenaFight();
 		}
 
-		for(int i = 0 ; i < 2 ; i ++ ) {
+		for(int i = 0 ; i < 10 ; i ++ ) {
 			Log.i("BOT: ", "Round " + String.valueOf(i));
 			startBattle();
 			doBattle();
@@ -44,6 +40,7 @@ public class FortManager {
 		}
 	}
 	public static void begin(){
+		Log.i("BOT: ", "FortManager begin()");
 		m_instance = new FortManager();
 	}
 	
@@ -55,22 +52,12 @@ public class FortManager {
 		inBattle = 1;
 		Log.i("BOT: ", "On battle screen");
 		new BattleManager("BATTLE").start();
-		
-		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*120)){
+		Log.i("BOT: ", "On battle screen After Spawning Thread");
+
+		if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*18)){
 			Log.i("BOT: ", "Battle done ");
 		}else {
 			Log.i("BOT: ", " Battle failed " );
-		}
-		try {
-			UiObject screenData = new UiObject(new UiSelector().className("android.webkit.WebView"));
-			
-			
-			Log.i("BOT: ", screenData.getPackageName());
-			Log.i("BOT: ", screenData.getClass().getName());
-
-			
-		} catch (UiObjectNotFoundException e) {
-			Log.i("BOT: ", "No webview found");
 		}
 		inBattle = 0;
 		try{
@@ -86,6 +73,7 @@ public class FortManager {
 	
 	private boolean getToStartScreen2() {
 		int c = 3;
+		Log.i("BOT: ", "FortManager beginning");
 		while((c--)!=0) {
 			if(	Bot2.getDevice().waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT*4)){
 				Log.i("BOT: ", "Wait for window update done " + String.valueOf(c) );
